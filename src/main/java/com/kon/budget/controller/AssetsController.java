@@ -2,7 +2,6 @@ package com.kon.budget.controller;
 
 import com.kon.budget.service.AssetsService;
 import com.kon.budget.service.dtos.AssetDto;
-import com.kon.budget.service.dtos.AssetsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +20,7 @@ public class AssetsController {
     }
 
     @GetMapping
-    public AssetsDto getAssets() {
+    public List<AssetDto> getAssets() {
         return  assetsService.getAllAssets();
     }
 
@@ -33,6 +32,11 @@ public class AssetsController {
     @DeleteMapping
     public void deleteAsset(@RequestBody AssetDto dto) {
         assetsService.deleteAsset(dto);
+    }
+
+    @PutMapping
+    public void updateAsset(@RequestBody AssetDto dto) {
+        assetsService.updateAsset(dto);
     }
 
 }
