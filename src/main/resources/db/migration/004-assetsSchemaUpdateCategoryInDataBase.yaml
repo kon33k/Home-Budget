@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-assets-schema-update-category-in-data-base
+      author: kon
+      changes:
+        - update:
+            tableName: assets
+            columns:
+              - column:
+                  name: category
+                  value: SALARY
+                where: category='0'
+              - column:
+                  name: category
+                  value: RENT
+                where: category='1'
+              - column:
+                  name: category
+                  value: OTHER
+                where: category='2'

@@ -1,21 +1,22 @@
 package com.kon.budget.repository.entities;
 
-import com.kon.budget.enums.AssetCategory;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.UUID;
 
+
 @Entity
-@Table(name = "assets")
+@Table(name = "users")
 @Getter
 @Setter
 @EqualsAndHashCode
 @ToString
-public class AssetEntity {
+public class UserEntity {
 
     @Id
     @Column(name = "id", updatable = false, nullable = false)
@@ -25,9 +26,6 @@ public class AssetEntity {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID id;
-    private BigDecimal amount;
-    private Instant incomeDate;
-
-    @Enumerated(EnumType.STRING)
-    private AssetCategory category;
+    private String username;
+    private String password;
 }
