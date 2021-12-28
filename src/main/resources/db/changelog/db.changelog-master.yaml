@@ -5,3 +5,7 @@ databaseChangeLog:
       file: db/migration/002-assetsSchemaAddIncomeDate.yaml
   - include:
       file: db/migration/003-assetsSchemaAddIncomeCategory.yaml
+  - include:
+      file: db/migration/004-assetsSchemaUpdateCategoryInDataBase.yaml
+  - include:
+      file: db/migration/005-userSchema.yaml
