@@ -1,15 +1,15 @@
 package com.kon.budget.validator;
 
-import com.kon.budget.enums.ValidatorsAssetEnum;
 import com.kon.budget.exception.AssetIncompleteException;
 import com.kon.budget.service.dtos.AssetDto;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 @Component
 public class AssetValidator {
+
+    /*
+    wywala wyjatek gdy zostanie znaleziony kjomunikat o błędzie
+     */
 
     private Validator validator = new AmountValidator();
 

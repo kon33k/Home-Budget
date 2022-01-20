@@ -7,13 +7,13 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "assets")
 @Getter
 @Setter
-@EqualsAndHashCode
 @ToString
 public class AssetEntity {
 
@@ -26,8 +26,26 @@ public class AssetEntity {
     )
     private UUID id;
     private BigDecimal amount;
+
+    //TODO: moga wiazac sie prbloemy z klasa Instant zmienic na LocalDateTime.
     private Instant incomeDate;
 
     @Enumerated(EnumType.STRING)
     private AssetCategory category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserEntity user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AssetEntity entity = (AssetEntity) o;
+        return Objects.equals(id, entity.id) && Objects.equals(user, entity.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user);
+    }
 }

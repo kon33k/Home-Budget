@@ -3,7 +3,9 @@ package com.kon.budget.service;
 import com.kon.budget.enums.AssetCategory;
 import com.kon.budget.mapper.AssetsMapper;
 import com.kon.budget.repository.AssetsRepository;
+import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.AssetDto;
+import com.kon.budget.service.dtos.UserDetailsDto;
 import com.kon.budget.validator.AssetValidator;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -19,15 +21,17 @@ public class AssetsService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(AssetsService.class.getName());
 
-    private AssetsRepository assetsRepository;
-    private AssetsMapper assetsMapper;
-    private AssetValidator assetValidator;
+    private final AssetsRepository assetsRepository;
+    private final AssetsMapper assetsMapper;
+    private final AssetValidator assetValidator;
+    private final UserLogInfoService userLogInfoService;
 
 
     public List<AssetDto> getAllAssets() {
         LOGGER.debug("Get all assets");
-        return assetsRepository.findAll().stream()
-                .map(entity -> assetsMapper.fromEntityToDto(entity))
+        var user = getUserEntity();
+        return assetsRepository.getAssetEntitiesByUser(user).stream()
+                .map(assetsMapper::fromEntityToDto)
                 .collect(Collectors.toList());
     }
 
@@ -35,7 +39,8 @@ public class AssetsService {
         LOGGER.info("Set Asset");
         LOGGER.debug("AssetDto  " + dto);
         assetValidator.validate(dto);
-        var entity = assetsMapper.fromDtoToEntity(dto);
+        var user = getUserEntity();
+        var entity = assetsMapper.fromDtoToEntity(dto, user);
 
         assetsRepository.save(entity);
         LOGGER.info("Asset Saved");
@@ -44,11 +49,11 @@ public class AssetsService {
     public void deleteAsset(AssetDto dto) {
         LOGGER.info("Delete asset");
         LOGGER.debug("AssetDto " + dto);
-        var entirt = assetsMapper.fromDtoToEntity(dto);
+        UserEntity user = getUserEntity();
+        var entity = assetsMapper.fromDtoToEntity(dto, user);
 
-        assetsRepository.delete(entirt);
+        assetsRepository.delete(entity);
         LOGGER.info("Asset deleted");
-
     }
 
     public void updateAsset(AssetDto dto) {
@@ -60,12 +65,23 @@ public class AssetsService {
             assetsRepository.saveAndFlush(e);
         });
         LOGGER.info("Asset updated");
-
     }
 
     public List<AssetDto> getAssetsByCategory(AssetCategory category) {
         return assetsRepository.getAssetEntitiesByCategory(category)
-                .stream().map(entity -> assetsMapper.fromEntityToDto(entity))
+                .stream().map(assetsMapper::fromEntityToDto)
                 .collect(Collectors.toList());
+    }
+
+    // pobier aktualnie zalogowane usera
+    private UserEntity getUserEntity() {
+        LOGGER.info("GetLoggedUserEntity");
+        return userLogInfoService.getLoggedUserEntity();
+    }
+
+    public void deleteAllAssetsByUser(UserEntity userEntity) {
+        LOGGER.info("Delete all assets by user:" + userEntity.getUsername());
+
+        assetsRepository.deleteByUser(userEntity);
     }
 }

@@ -34,14 +34,16 @@ class AssetsServiceTest {
 
     @Mock
     private AssetsRepository assetsRepository;
-    private AssetValidator assetValidator = new AssetValidator();
-    private AssetsMapper assetsMapper = new AssetsMapper();
+    @Mock
+    private UserLogInfoService userLogInfoService;
+    private final AssetValidator assetValidator = new AssetValidator();
+    private final AssetsMapper assetsMapper = new AssetsMapper();
 
     private AssetsService service;
 
     @BeforeEach
     public void init() {
-        service = new AssetsService(assetsRepository, assetsMapper, assetValidator);
+        service = new AssetsService(assetsRepository, assetsMapper, assetValidator, userLogInfoService);
     }
 
     @Test
@@ -52,7 +54,7 @@ class AssetsServiceTest {
             .withAmount(asset)
             .build();
         List<AssetEntity> assetList = Collections.singletonList(assetEntity);
-        Mockito.when(assetsRepository.findAll()).thenReturn(assetList);
+        Mockito.when(assetsRepository.getAssetEntitiesByUser(any())).thenReturn(assetList);
         //when
         var result = service.getAllAssets();
         //then
@@ -73,7 +75,7 @@ class AssetsServiceTest {
                 .withAmount(assetTwo)
                 .build();
         List<AssetEntity> assetEntities = asList(entityOne, entityTwo);
-        Mockito.when(assetsRepository.findAll()).thenReturn(assetEntities);
+        Mockito.when(assetsRepository.getAssetEntitiesByUser(any())).thenReturn(assetEntities);
 
         //when
         var result = service.getAllAssets();

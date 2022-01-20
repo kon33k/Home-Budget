@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum AuthenticationMessageEnum {
 
     USER_NOT_FOUND("user not found"),
-    USER_ALREADY_EXIST("user already exist");
+    USER_ALREADY_EXIST("user already exist"),
+    INVALID_USERNAME_OR_PASSWORD("invalid username or password");
 
     private final String message;
 }

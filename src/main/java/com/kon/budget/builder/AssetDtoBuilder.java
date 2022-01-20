@@ -9,6 +9,10 @@ import java.util.UUID;
 
 public class AssetDtoBuilder {
 
+    /*
+    buduje AssetDto
+     */
+
     private UUID id;
     private BigDecimal amount;
     private Instant incomeDate;

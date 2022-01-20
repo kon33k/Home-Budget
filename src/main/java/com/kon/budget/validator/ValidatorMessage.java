@@ -6,28 +6,14 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 class ValidatorMessage {
-/*
-    klasy IncomeDataValidator AmountValidator  Interface Validator    słuza do wyswietlenia wszytkich blednie wpsanych
-    w formularzu
+
+    /*
+    tworzy wiadomosci i kod errora
     */
 
     private List<String> message = new ArrayList<>();
     private List<String> code = new ArrayList<>();
-
-    public List<String> getMessage() {
-        return message;
-    }
-
-    public void setMessage(List<String> message) {
-        this.message = message;
-    }
-
-    public List<String> getCode() {
-        return code;
-    }
-
-    public void setCode(List<String> code) {
-        this.code = code;
-    }
 }

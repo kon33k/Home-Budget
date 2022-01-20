@@ -1,8 +1,11 @@
 package com.kon.budget.service.integrations;
 
+import com.kon.budget.builder.AssetEntityBuilder;
+import com.kon.budget.enums.AssetCategory;
 import com.kon.budget.enums.AuthenticationMessageEnum;
 import com.kon.budget.exception.UserAlreadyExistException;
 import com.kon.budget.exception.UserNotFoundException;
+import com.kon.budget.repository.AssetsRepository;
 import com.kon.budget.repository.UserRepository;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.UserDetailsServiceImpl;
@@ -11,19 +14,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import javax.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
+@WithMockUser(username = "userName", password = "userPassword")
 public class UserDetailServiceImplTest {
 
     public static final String USER_NAME = "userName";
@@ -37,10 +44,13 @@ public class UserDetailServiceImplTest {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    private AssetsRepository assetsRepository;
+
     @Test
     void shouldReturnUserWithUserNameAndPasswordFromDatabase() {
         ///given
-        initDatabase();
+        initDatabaseByUser();
         //when
         UserDetails result = userDetailsService.loadUserByUsername(USER_NAME);
         //then
@@ -70,8 +80,7 @@ public class UserDetailServiceImplTest {
     @Test
     void shouldThrowExceptionWhenUserIsNotFoundInDatabase() {
         //given
-        initDatabase();
-
+        initDatabaseByUser();
         //when
         UserNotFoundException result = assertThrows(UserNotFoundException.class,
                 () -> userDetailsService.loadUserByUsername("fakeUser"));
@@ -82,7 +91,7 @@ public class UserDetailServiceImplTest {
     @Test
     void shouldThrowExceptionWhenUserAlreadyExistInDatabase() {
         //given
-        initDatabase();
+        initDatabaseByUser();
         UserDetailsDto dto = new UserDetailsDto();
         dto.setUsername(USER_NAME);
         dto.setPassword(USER_PASSWORD);
@@ -93,7 +102,54 @@ public class UserDetailServiceImplTest {
         assertThat(result.getMessage()).isEqualTo(AuthenticationMessageEnum.USER_ALREADY_EXIST.getMessage());
     }
 
-    private void initDatabase() {
+    @Test
+    void shouldRemoveUserWhichDoNotHaveAnyAssetsInDatabase() {
+        //given
+        initDatabaseByUser();
+
+        var userInDatabase = userRepository.findAll();
+        assertThat(userInDatabase).hasSize(1);
+        //when
+        userDetailsService.deleteUser();
+        //then
+        var userInDatabaseAfterDelete = userRepository.findAll();
+        assertThat(userInDatabaseAfterDelete).hasSize(0);
+
+    }
+
+    @Test
+    void shouldRemoveUserWitchHaveOneAssetInDatabase() {
+        //given
+        initDatabaseByUser();
+        var userEntity = userRepository.findByUsername(USER_NAME).get();
+        initDatabaseWithUserAssets(userEntity);
+
+        var userInDatabase = userRepository.findAll();
+        assertThat(userInDatabase).hasSize(1);
+        var assetsInDatabase = assetsRepository.findAll();
+        assertThat(assetsInDatabase).hasSize(1);
+        assertThat(assetsInDatabase.get(0).getUser()).isEqualTo(userEntity);
+        //when
+        userDetailsService.deleteUser();
+        //then
+        var userInDatabaseAfterDelete = userRepository.findAll();
+        assertThat(userInDatabaseAfterDelete).hasSize(0);
+        var assetsInDatabaseAfterDelete = assetsRepository.findAll();
+        assertThat(assetsInDatabaseAfterDelete).hasSize(0);
+    }
+
+    private void initDatabaseWithUserAssets(UserEntity userEntity) {
+        var assetsEntity = new AssetEntityBuilder()
+                .withIncomeDate(Instant.now())
+                .withUser(userEntity)
+                .withAmount(BigDecimal.ONE)
+                .withCategory(AssetCategory.OTHER)
+                .build();
+
+        assetsRepository.save(assetsEntity);
+    }
+
+    private void initDatabaseByUser() {
         UserEntity entity = new UserEntity();
         entity.setUsername(USER_NAME);
         entity.setPassword(USER_PASSWORD);

@@ -3,15 +3,20 @@ package com.kon.budget.mapper;
 import com.kon.budget.builder.AssetDtoBuilder;
 import com.kon.budget.builder.AssetEntityBuilder;
 import com.kon.budget.repository.entities.AssetEntity;
+import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.AssetDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-@Component //tworzy bean
+@Component
 public class AssetsMapper {
 
-    public AssetEntity fromDtoToEntity(AssetDto dto) {
+    /*
+    sprawdza czy dto lub któreś z pól dto nie jest null i ustawia pola w AssetEntityBuilder
+     */
+
+    public AssetEntity fromDtoToEntity(AssetDto dto, UserEntity user) {
 
         if(Objects.isNull(dto)) {
             return null;
@@ -34,8 +39,16 @@ public class AssetsMapper {
             entityBuilder.withCategory(dto.getCategory());
         }
 
+        if(Objects.nonNull(user)) {
+            entityBuilder.withUser(user);
+        }
+
         return entityBuilder.build();
     }
+
+    /*
+    sprawdza czy encja lub któreś z pól encji nie jest null i ustawia pola w AssetDtoBuilder
+     */
 
     public AssetDto fromEntityToDto(AssetEntity entity) {
 
