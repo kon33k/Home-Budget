@@ -23,7 +23,12 @@ public class AuthenticationController {
     }
 
     @PostMapping
-    private UUID setUserDetails(@RequestBody UserDetailsDto userDetailsDto) {
+    public UUID setUserDetails(@RequestBody UserDetailsDto userDetailsDto) {
         return userDetailsServiceImpl.saveUser(userDetailsDto);
+    }
+
+    @DeleteMapping
+    public void deleteUser() {
+        userDetailsServiceImpl.deleteUser();
     }
 }

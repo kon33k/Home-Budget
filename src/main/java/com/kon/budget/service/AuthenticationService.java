@@ -1,9 +1,12 @@
 package com.kon.budget.service;
 
+import com.kon.budget.exception.InvalidUsernameOrPasswordException;
 import com.kon.budget.service.dtos.AuthenticationJwtToken;
 import com.kon.budget.service.dtos.UserDetailsDto;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -18,9 +21,14 @@ public class AuthenticationService {
 
     public AuthenticationJwtToken createAuthenticationToken(UserDetailsDto userDetailsDto) {
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                userDetailsDto.getUsername(), userDetailsDto.getPassword()
-        ));
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    userDetailsDto.getUsername(), userDetailsDto.getPassword()
+            ));
+        } catch (BadCredentialsException | InternalAuthenticationServiceException e) {
+            throw new InvalidUsernameOrPasswordException();
+        }
+
 
         var userDetails = userDetailsService.loadUserByUsername(userDetailsDto.getUsername());
         var jwtToken = jwtService.generateJWTToken(userDetails);

@@ -1,6 +1,13 @@
 package com.kon.budget.exception;
 
+import lombok.Getter;
+
+@Getter
 public class AssetIncompleteException extends RuntimeException {
+
+    /*
+    wyjątek do niewłasciwie wysłanego json
+     */
 
     private String errorCode;
 
@@ -9,7 +16,4 @@ public class AssetIncompleteException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public String getErrorCode() {
-        return errorCode;
-    }
 }
