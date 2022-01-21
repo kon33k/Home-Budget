@@ -17,20 +17,7 @@ import javax.transaction.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-@Transactional
-public class AuthenticationServiceIntegrationTest {
-
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
-    private JWTService jwtService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    private AuthenticationService authenticationService;
+public class AuthenticationServiceIntegrationTest extends IntegrationTestsData{
 
     @BeforeEach
     public void setup() {
@@ -39,7 +26,7 @@ public class AuthenticationServiceIntegrationTest {
 
     @Test
     void shouldThrownAnInvalidUsernameOrPasswordExceptionWhenUsernameIsIncorrect() {
-        initUserDatabase();
+        initDatabaseWithUser();
 
         UserDetailsDto dto = new UserDetailsDto();
         dto.setUsername("invalidUsername");
@@ -55,7 +42,7 @@ public class AuthenticationServiceIntegrationTest {
 
     @Test
     void shouldThrownAnInvalidUsernameOrPasswordExceptionWhenPasswordIsIncorrect() {
-        initUserDatabase();
+        initDatabaseWithUser();
 
         UserDetailsDto dto = new UserDetailsDto();
         dto.setUsername("username");
@@ -67,12 +54,5 @@ public class AuthenticationServiceIntegrationTest {
         //then
         assertThat(result).isNotNull();
         assertThat(result.getMessage()).isEqualTo(AuthenticationMessageEnum.INVALID_USERNAME_OR_PASSWORD.getMessage());
-    }
-
-    private void initUserDatabase() {
-        UserDetailsDto dto = new UserDetailsDto();
-        dto.setUsername("username");
-        dto.setPassword("userPassword");
-        userDetailsService.saveUser(dto);
     }
 }
