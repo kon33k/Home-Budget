@@ -77,6 +77,12 @@ class AuthenticationServiceTest {
         Authentication authenticationToken = new UsernamePasswordAuthenticationToken(userName, userPassword);
         when(authenticationManager.authenticate(authenticationToken)).thenThrow(BadCredentialsException.class);
         //when
+        var result = assertThrows(InvalidUsernameOrPasswordException.class,
+                () -> authenticationService.createAuthenticationToken(authenticationUser));
 
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getMessage())
+                .isEqualTo(AuthenticationMessageEnum.INVALID_USERNAME_OR_PASSWORD.getMessage());
     }
 }

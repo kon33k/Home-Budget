@@ -5,13 +5,9 @@ import com.kon.budget.enums.AssetCategory;
 import com.kon.budget.enums.AuthenticationMessageEnum;
 import com.kon.budget.exception.UserAlreadyExistException;
 import com.kon.budget.exception.UserNotFoundException;
-import com.kon.budget.repository.AssetsRepository;
-import com.kon.budget.repository.UserRepository;
 import com.kon.budget.repository.entities.UserEntity;
-import com.kon.budget.service.UserDetailsServiceImpl;
 import com.kon.budget.service.dtos.UserDetailsDto;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -28,42 +24,25 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-@Transactional
-@WithMockUser(username = "userName", password = "userPassword")
-public class UserDetailServiceImplTest {
-
-    public static final String USER_NAME = "userName";
-    public static final String USER_PASSWORD = "userPassword";
-    public static final String BCRYPT_PREFIX = "$2a$10$";
-    public static final String BCRYPT_REGEX =  "^[$]2[abxy]?[$](?:0[4-9]|[12][0-9]|3[01])[$][./0-9a-zA-Z]{53}$";
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
-    private AssetsRepository assetsRepository;
+public class UserDetailServiceImplTest extends IntegrationTestsData{
 
     @Test
     void shouldReturnUserWithUserNameAndPasswordFromDatabase() {
         ///given
-        initDatabaseByUser();
+        initDatabaseByMainUser();
         //when
-        UserDetails result = userDetailsService.loadUserByUsername(USER_NAME);
+        UserDetails result = userDetailsService.loadUserByUsername(MAIN_TEST_USERNAME);
         //then
-        assertThat(result.getUsername()).isEqualTo(USER_NAME);
-        assertThat(result.getPassword()).isEqualTo(USER_PASSWORD);
+        assertThat(result.getUsername()).isEqualTo(MAIN_TEST_USERNAME);
+        assertThat(result.getPassword()).isEqualTo(MAIN_TEST_USER_PASSWORD);
     }
 
     @Test
     void shouldSaveUserInToDatabase() {
         //given
         UserDetailsDto dto = new UserDetailsDto();
-        dto.setUsername(USER_NAME);
-        dto.setPassword(USER_PASSWORD);
+        dto.setUsername(MAIN_TEST_USERNAME);
+        dto.setPassword(MAIN_TEST_USER_PASSWORD);
         //when
         UUID userId = userDetailsService.saveUser(dto);
         //then
@@ -71,7 +50,7 @@ public class UserDetailServiceImplTest {
         Optional<UserEntity> byId = userRepository.findById(userId);
         UserEntity userEntity = byId.get(); // get bo by id zwraca optionala
         assertAll(
-                () -> assertThat(userEntity.getUsername()).isEqualTo(USER_NAME),
+                () -> assertThat(userEntity.getUsername()).isEqualTo(MAIN_TEST_USERNAME),
                 () -> assertThat(userEntity.getPassword()).contains(BCRYPT_PREFIX),
                 () -> assertThat(userEntity.getPassword()).matches(Pattern.compile(BCRYPT_REGEX))
         );
@@ -80,7 +59,7 @@ public class UserDetailServiceImplTest {
     @Test
     void shouldThrowExceptionWhenUserIsNotFoundInDatabase() {
         //given
-        initDatabaseByUser();
+        initDatabaseByMainUser();
         //when
         UserNotFoundException result = assertThrows(UserNotFoundException.class,
                 () -> userDetailsService.loadUserByUsername("fakeUser"));
@@ -91,10 +70,10 @@ public class UserDetailServiceImplTest {
     @Test
     void shouldThrowExceptionWhenUserAlreadyExistInDatabase() {
         //given
-        initDatabaseByUser();
+        initDatabaseByMainUser();
         UserDetailsDto dto = new UserDetailsDto();
-        dto.setUsername(USER_NAME);
-        dto.setPassword(USER_PASSWORD);
+        dto.setUsername(MAIN_TEST_USERNAME);
+        dto.setPassword(MAIN_TEST_USER_PASSWORD);
         //when
         UserAlreadyExistException result = assertThrows(UserAlreadyExistException.class,
                 () -> userDetailsService.saveUser(dto));
@@ -105,7 +84,7 @@ public class UserDetailServiceImplTest {
     @Test
     void shouldRemoveUserWhichDoNotHaveAnyAssetsInDatabase() {
         //given
-        initDatabaseByUser();
+        initDatabaseByMainUser();
 
         var userInDatabase = userRepository.findAll();
         assertThat(userInDatabase).hasSize(1);
@@ -120,8 +99,8 @@ public class UserDetailServiceImplTest {
     @Test
     void shouldRemoveUserWitchHaveOneAssetInDatabase() {
         //given
-        initDatabaseByUser();
-        var userEntity = userRepository.findByUsername(USER_NAME).get();
+        initDatabaseByMainUser();
+        var userEntity = userRepository.findByUsername(MAIN_TEST_USERNAME).get();
         initDatabaseWithUserAssets(userEntity);
 
         var userInDatabase = userRepository.findAll();
@@ -136,23 +115,5 @@ public class UserDetailServiceImplTest {
         assertThat(userInDatabaseAfterDelete).hasSize(0);
         var assetsInDatabaseAfterDelete = assetsRepository.findAll();
         assertThat(assetsInDatabaseAfterDelete).hasSize(0);
-    }
-
-    private void initDatabaseWithUserAssets(UserEntity userEntity) {
-        var assetsEntity = new AssetEntityBuilder()
-                .withIncomeDate(Instant.now())
-                .withUser(userEntity)
-                .withAmount(BigDecimal.ONE)
-                .withCategory(AssetCategory.OTHER)
-                .build();
-
-        assetsRepository.save(assetsEntity);
-    }
-
-    private void initDatabaseByUser() {
-        UserEntity entity = new UserEntity();
-        entity.setUsername(USER_NAME);
-        entity.setPassword(USER_PASSWORD);
-        userRepository.save(entity);
     }
 }
