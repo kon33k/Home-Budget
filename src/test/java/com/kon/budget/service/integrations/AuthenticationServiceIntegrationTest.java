@@ -3,21 +3,15 @@ package com.kon.budget.service.integrations;
 import com.kon.budget.enums.AuthenticationMessageEnum;
 import com.kon.budget.exception.InvalidUsernameOrPasswordException;
 import com.kon.budget.service.AuthenticationService;
-import com.kon.budget.service.JWTService;
-import com.kon.budget.service.UserDetailsServiceImpl;
 import com.kon.budget.service.dtos.UserDetailsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.AuthenticationManager;
 
-import javax.transaction.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AuthenticationServiceIntegrationTest extends IntegrationTestsData{
+class AuthenticationServiceIntegrationTest extends IntegrationTestsData{
 
     @BeforeEach
     public void setup() {

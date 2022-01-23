@@ -4,7 +4,6 @@ package com.kon.budget.repository;
 import com.kon.budget.enums.AssetCategory;
 import com.kon.budget.repository.entities.AssetEntity;
 import com.kon.budget.repository.entities.UserEntity;
-import com.kon.budget.service.dtos.UserDetailsDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,6 @@
 package com.kon.budget.builder;
 
-import com.kon.budget.enums.AssetCategory;
 import com.kon.budget.enums.ExpensesCategory;
-import com.kon.budget.repository.entities.AssetEntity;
 import com.kon.budget.repository.entities.ExpensesEntity;
 import com.kon.budget.repository.entities.UserEntity;
 

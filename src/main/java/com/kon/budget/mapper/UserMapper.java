@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
+    // TODO: MAPSTRUCT
+
     public UserEntity fromDtoToEntity(UserDetailsDto userDetailsDto) {
         var entity = new UserEntity();
 

@@ -7,13 +7,14 @@ import com.kon.budget.service.dtos.AssetDto;
 import org.assertj.core.util.Streams;
 import org.junit.jupiter.api.Test;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-public class AssetServiceIntegrationTest extends IntegrationTestsData{
+class AssetServiceIntegrationTest extends IntegrationTestsData{
 
     @Test
     void shouldReturnListWithThreeElements() {

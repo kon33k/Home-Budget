@@ -1,16 +1,10 @@
 package com.kon.budget.service.integrations;
 
 import com.kon.budget.builder.ExpensesDtoBuilder;
-import com.kon.budget.builder.ExpensesEntityBuilder;
 import com.kon.budget.enums.ExpensesCategory;
-import com.kon.budget.repository.entities.UserEntity;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -47,7 +41,7 @@ class ExpensesServiceIntegrationTest extends IntegrationTestsData{
         expensesService.deleteExpenses(dto);
         //then
         var entitiesInDatabaseAfterDelete = expensesRepository.findAll();
-        assertThat(entitiesInDatabaseAfterDelete).hasSize(0);
+        assertThat(entitiesInDatabaseAfterDelete).isEmpty();
     }
 
     @Test

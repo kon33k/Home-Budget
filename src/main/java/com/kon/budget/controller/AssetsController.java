@@ -4,13 +4,10 @@ import com.kon.budget.enums.AssetCategory;
 import com.kon.budget.service.AssetsService;
 import com.kon.budget.service.dtos.AssetDto;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
 import java.util.List;
-
-import static java.util.Arrays.asList;
 
 @RestController
 @RequestMapping("/assets")

@@ -1,21 +1,14 @@
 package com.kon.budget.service.integrations;
 
-import com.kon.budget.builder.AssetEntityBuilder;
-import com.kon.budget.enums.AssetCategory;
 import com.kon.budget.enums.AuthenticationMessageEnum;
 import com.kon.budget.exception.UserAlreadyExistException;
 import com.kon.budget.exception.UserNotFoundException;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.UserDetailsDto;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import javax.transaction.Transactional;
-
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -24,7 +17,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class UserDetailServiceImplTest extends IntegrationTestsData{
+class UserDetailServiceImplTest extends IntegrationTestsData{
 
     @Test
     void shouldReturnUserWithUserNameAndPasswordFromDatabase() {
@@ -112,8 +105,8 @@ public class UserDetailServiceImplTest extends IntegrationTestsData{
         userDetailsService.deleteUser();
         //then
         var userInDatabaseAfterDelete = userRepository.findAll();
-        assertThat(userInDatabaseAfterDelete).hasSize(0);
+        assertThat(userInDatabaseAfterDelete).isEmpty();
         var assetsInDatabaseAfterDelete = assetsRepository.findAll();
-        assertThat(assetsInDatabaseAfterDelete).hasSize(0);
+        assertThat(assetsInDatabaseAfterDelete).isEmpty();
     }
 }

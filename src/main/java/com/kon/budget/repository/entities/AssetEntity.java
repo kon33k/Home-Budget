@@ -27,7 +27,7 @@ public class AssetEntity {
     private UUID id;
     private BigDecimal amount;
 
-    //TODO: moga wiazac sie prbloemy z klasa Instant zmienic na LocalDateTime.
+    // TODO: moga wiazac sie prbloemy z klasa Instant zmienic na LocalDateTime.
     private Instant incomeDate;
 
     @Enumerated(EnumType.STRING)
