@@ -12,10 +12,11 @@ import java.util.Objects;
 @Component
 public class AssetsMapper {
 
-    /*
-    sprawdza czy dto lub któreś z pól dto nie jest null i ustawia pola w AssetEntityBuilder
+    /**
+    * sprawdza czy dto lub któreś z pól dto nie jest null i ustawia pola w AssetEntityBuilder
      */
 
+    // TODO: przerobic na mapstruct
     public AssetEntity fromDtoToEntity(AssetDto dto, UserEntity user) {
 
         if(Objects.isNull(dto)) {

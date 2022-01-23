@@ -5,11 +5,11 @@ import lombok.Getter;
 @Getter
 public class AssetIncompleteException extends RuntimeException {
 
-    /*
-    wyjątek do niewłasciwie wysłanego json
+    /**
+    * wyjątek do niewłasciwie wysłanego json
      */
 
-    private String errorCode;
+    private final String errorCode;
 
     public AssetIncompleteException(String message, String errorCode) {
         super(message);

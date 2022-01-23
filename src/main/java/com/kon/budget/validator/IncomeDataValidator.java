@@ -1,7 +1,6 @@
 package com.kon.budget.validator;
 
 import com.kon.budget.enums.ValidatorsAssetEnum;
-import com.kon.budget.exception.AssetIncompleteException;
 import com.kon.budget.service.dtos.AssetDto;
 
 import java.util.Objects;

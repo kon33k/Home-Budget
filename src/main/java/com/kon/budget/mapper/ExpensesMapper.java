@@ -12,9 +12,11 @@ import java.util.stream.Collectors;
 @Component
 public class ExpensesMapper {
 
-    /*
-     po sprawdzeiu czy pola nie sa null mapuje dto na encje
+    /**
+     * po sprawdzeiu czy pola nie sa null mapuje dto na encje
      */
+
+    //TODO: przerobic na map struct
 
     public ExpensesEntity fromDtoToEntity(ExpensesDto dto, UserEntity user) {
 

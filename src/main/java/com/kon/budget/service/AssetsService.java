@@ -5,9 +5,9 @@ import com.kon.budget.mapper.AssetsMapper;
 import com.kon.budget.repository.AssetsRepository;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.AssetDto;
-import com.kon.budget.service.dtos.UserDetailsDto;
 import com.kon.budget.validator.AssetValidator;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class AssetsService {
 
     public void setAsset(AssetDto dto) {
         LOGGER.info("Set Asset");
-        LOGGER.debug("AssetDto  " + dto);
+        LOGGER.debug("AssetDto {} ", dto);
         assetValidator.validate(dto);
         var user = getUserEntity();
         var entity = assetsMapper.fromDtoToEntity(dto, user);
@@ -48,7 +48,7 @@ public class AssetsService {
 
     public void deleteAsset(AssetDto dto) {
         LOGGER.info("Delete asset");
-        LOGGER.debug("AssetDto " + dto);
+        LOGGER.debug("AssetDto {}", dto);
         UserEntity user = getUserEntity();
         var entity = assetsMapper.fromDtoToEntity(dto, user);
 
@@ -58,7 +58,7 @@ public class AssetsService {
 
     public void updateAsset(AssetDto dto) {
         LOGGER.info("Updated asset");
-        LOGGER.debug("AssetDto " + dto);
+        LOGGER.debug("AssetDto {} ", dto);
         var entity = assetsRepository.findById(dto.getId());
         entity.ifPresent(e -> {
             e.setAmount(dto.getAmount());
@@ -80,7 +80,7 @@ public class AssetsService {
     }
 
     public void deleteAllAssetsByUser(UserEntity userEntity) {
-        LOGGER.info("Delete all assets by user:" + userEntity.getUsername());
+        LOGGER.info("Delete all assets by user: {} ", userEntity.getUsername());
 
         assetsRepository.deleteByUser(userEntity);
     }

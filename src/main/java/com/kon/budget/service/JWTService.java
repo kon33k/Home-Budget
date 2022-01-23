@@ -13,8 +13,8 @@ import java.util.Map;
 @Service
 public class JWTService {
 
-    private final int MILLISECOUNDS_IN_DAY = 8_640_000;
-    private final String SECRET = "mySecret";
+    private static final int MILLISECOUNDS_IN_DAY = 8_640_000;
+    private static final String SECRET = "mySecret";
 
     private Claims extractClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();

@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LOGGER.info("Searching user = " + username);
+        LOGGER.info("Searching user = {} ", username);
         var entity = userRepository.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
         return new User(entity.getUsername(), entity.getPassword(), Collections.emptyList());
@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         validateIfUserExist(userDetailsDto);
         var entity = userMapper.fromDtoToEntity(userDetailsDto);
         var savedEntity =  userRepository.save(entity);
-        LOGGER.info("User saved = " + savedEntity);
+        LOGGER.info("User saved = {} ", savedEntity);
 
         return savedEntity.getId();
     }
@@ -60,6 +60,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         UserEntity userEntity = userLogInfoService.getLoggedUserEntity();
         assetsService.deleteAllAssetsByUser(userEntity);
         userRepository.delete(userEntity);
-        LOGGER.info("User: " + userEntity.getUsername() + " and his assets deleted");
+        LOGGER.info("User: {} and his assets deleted", userEntity.getUsername());
     }
 }
