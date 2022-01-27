@@ -5,6 +5,7 @@ import com.kon.budget.service.dtos.AssetDto;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class AssetDtoBuilder {
@@ -15,7 +16,7 @@ public class AssetDtoBuilder {
 
     private UUID id;
     private BigDecimal amount;
-    private Instant incomeDate;
+    private LocalDateTime incomeDate;
     private AssetCategory category;
 
 
@@ -29,7 +30,7 @@ public class AssetDtoBuilder {
         return this;
     }
 
-    public AssetDtoBuilder withIncomeDate(Instant incomeDate) {
+    public AssetDtoBuilder withIncomeDate(LocalDateTime incomeDate) {
         this.incomeDate = incomeDate;
         return this;
     }

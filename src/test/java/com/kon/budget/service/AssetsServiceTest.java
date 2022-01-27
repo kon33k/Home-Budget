@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -92,7 +93,7 @@ class AssetsServiceTest {
     void shouldVerifyIfTheRepositorySaveWasCalledOneTime() {
         //given
         BigDecimal asset = BigDecimal.ONE;
-        Instant incomeDate = Instant.now();
+        LocalDateTime incomeDate = LocalDateTime.now();
         AssetDto dto = new AssetDtoBuilder()
                 .withAmount(asset)
                 .withIncomeDate(incomeDate)
@@ -111,7 +112,7 @@ class AssetsServiceTest {
     void shouldThrowExceptionWhenAmountInAssetDtoIsNull() {
         //given
         AssetDto dto = new AssetDtoBuilder()
-                .withIncomeDate(Instant.now())
+                .withIncomeDate(LocalDateTime.now())
                 .build();
         List<String> list = new ArrayList<>();
         list.add(ValidatorsAssetEnum.NO_AMOUNT.getMessage());

@@ -7,11 +7,11 @@ import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.AssetDto;
 import com.kon.budget.validator.AssetValidator;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +41,6 @@ public class AssetsService {
         assetValidator.validate(dto);
         var user = getUserEntity();
         var entity = assetsMapper.fromDtoToEntity(dto, user);
-
         assetsRepository.save(entity);
         LOGGER.info("Asset Saved");
     }
@@ -56,6 +55,7 @@ public class AssetsService {
         LOGGER.info("Asset deleted");
     }
 
+    @Transactional
     public void updateAsset(AssetDto dto) {
         LOGGER.info("Updated asset");
         LOGGER.debug("AssetDto {} ", dto);

@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ public class ExpensesDto {
 
     private UUID id;
     private BigDecimal amount;
-    private Instant purchaseData;
+    private LocalDateTime purchaseData;
     private ExpensesCategory category;
 
     @Override

@@ -4,14 +4,14 @@ import com.kon.budget.enums.ExpensesCategory;
 import com.kon.budget.service.dtos.ExpensesDto;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ExpensesDtoBuilder {
 
     private UUID id;
     private BigDecimal amount;
-    private Instant purchaseData;
+    private LocalDateTime purchaseData;
     private ExpensesCategory category;
 
     public ExpensesDtoBuilder withId(UUID id) {
@@ -24,7 +24,7 @@ public class ExpensesDtoBuilder {
         return this;
     }
 
-    public ExpensesDtoBuilder purchaseData(Instant purchaseData) {
+    public ExpensesDtoBuilder purchaseData(LocalDateTime purchaseData) {
         this.purchaseData = purchaseData;
         return this;
     }

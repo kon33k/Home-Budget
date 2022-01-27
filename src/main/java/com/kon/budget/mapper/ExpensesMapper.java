@@ -31,7 +31,7 @@ public class ExpensesMapper {
 
 
         if(Objects.nonNull(dto.getPurchaseData())) {
-            entity.setCategory(dto.getCategory());
+            entity.setPurchaseDate(dto.getPurchaseData());
         }
 
         if(Objects.nonNull(dto.getId())) {

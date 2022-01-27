@@ -4,7 +4,7 @@ import com.kon.budget.enums.AssetCategory;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -15,6 +15,6 @@ public class AssetDto {
 
     private UUID id;
     private BigDecimal amount;
-    private Instant incomeDate;
+    private LocalDateTime incomeDate;
     private AssetCategory category;
 }

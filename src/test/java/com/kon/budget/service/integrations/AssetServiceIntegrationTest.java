@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -32,7 +33,7 @@ class AssetServiceIntegrationTest extends IntegrationTestsData{
         initMainMockUserInToDatabase();
         AssetDto dto = new AssetDtoBuilder()
                 .withAmount(new BigDecimal(11))
-                .withIncomeDate(Instant.now())
+                .withIncomeDate(LocalDateTime.now())
                 .withCategory(AssetCategory.RENT)
                 .build();
         // when
@@ -45,6 +46,7 @@ class AssetServiceIntegrationTest extends IntegrationTestsData{
         assertThat(entity.getAmount()).isEqualTo(dto.getAmount());
         assertThat(entity.getIncomeDate()).isEqualTo(dto.getIncomeDate());
     }
+
     @Test
     void shouldReturnListOnlyWithOneCategory() {
         // given

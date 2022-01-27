@@ -6,6 +6,7 @@ import com.kon.budget.repository.entities.UserEntity;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class AssetEntityBuilder {
@@ -16,7 +17,7 @@ public class AssetEntityBuilder {
 
     private UUID id;
     private BigDecimal amount;
-    private Instant incomeDate;
+    private LocalDateTime incomeDate;
     private AssetCategory category;
     private UserEntity userEntity;
 
@@ -31,7 +32,7 @@ public class AssetEntityBuilder {
         return this;
     }
 
-    public AssetEntityBuilder withIncomeDate(Instant incomeDate) {
+    public AssetEntityBuilder withIncomeDate(LocalDateTime incomeDate) {
         this.incomeDate = incomeDate;
         return this;
     }
