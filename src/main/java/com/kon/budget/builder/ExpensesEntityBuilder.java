@@ -7,13 +7,14 @@ import com.kon.budget.repository.entities.UserEntity;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ExpensesEntityBuilder {
 
     private UUID id;
     private BigDecimal amount;
-    private Instant purchaseDate;
+    private LocalDateTime purchaseDate;
     private UserEntity user;
     private ExpensesCategory category;
 
@@ -27,7 +28,7 @@ public class ExpensesEntityBuilder {
         return this;
     }
 
-    public ExpensesEntityBuilder withIncomeDate(Instant purchaseDate) {
+    public ExpensesEntityBuilder withPurchaseDate(LocalDateTime purchaseDate) {
         this.purchaseDate = purchaseDate;
         return this;
     }

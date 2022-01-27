@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,8 +28,7 @@ public class AssetEntity {
     private UUID id;
     private BigDecimal amount;
 
-    // TODO: moga wiazac sie prbloemy z klasa Instant zmienic na LocalDateTime.
-    private Instant incomeDate;
+    private LocalDateTime incomeDate;
 
     @Enumerated(EnumType.STRING)
     private AssetCategory category;

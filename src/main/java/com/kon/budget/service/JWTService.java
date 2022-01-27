@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 public class JWTService {
 
-    private static final int MILLISECOUNDS_IN_DAY = 8_640_000;
+    private static final int MILLISECOUNDS_IN_DAY = 86_400_000;
     private static final String SECRET = "mySecret";
 
     private Claims extractClaims(String token) {

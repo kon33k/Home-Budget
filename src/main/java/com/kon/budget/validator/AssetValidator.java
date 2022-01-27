@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class AssetValidator {
 
-    /*
-    wywala wyjatek gdy zostanie znaleziony kjomunikat o błędzie
+    /**
+    *wywala wyjatek gdy zostanie znaleziony kjomunikat o błędzie
      */
 
     private Validator validator = new AmountValidator();

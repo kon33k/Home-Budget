@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/expenses")
@@ -32,5 +33,10 @@ public class ExpensesController {
     @DeleteMapping
     public void deleteExpense(@RequestBody ExpensesDto expensesDto) {
         expensesService.deleteExpenses(expensesDto);
+    }
+
+    @GetMapping("/filter")
+    public  List<ExpensesDto> getFilteredExpenses(@RequestParam Map<String, String> filter) {
+        return expensesService.getFilteredExpenses(filter);
     }
 }

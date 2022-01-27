@@ -9,7 +9,6 @@ import com.kon.budget.repository.UserRepository;
 import com.kon.budget.repository.entities.AssetEntity;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.*;
-import com.kon.budget.service.dtos.UserDetailsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +16,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.time.Instant;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
@@ -54,7 +54,7 @@ public abstract class IntegrationTestsData {
 
     protected void initDatabaseWithUserAssets(UserEntity userEntity) {
         var assetsEntity = new AssetEntityBuilder()
-                .withIncomeDate(Instant.now())
+                .withIncomeDate(LocalDateTime.now())
                 .withUser(userEntity)
                 .withAmount(BigDecimal.ONE)
                 .withCategory(AssetCategory.OTHER)
@@ -67,19 +67,19 @@ public abstract class IntegrationTestsData {
         UserEntity userEntity = initMainMockUserInToDatabase();
         AssetEntity entity1 = new AssetEntityBuilder()
                 .withAmount(new BigDecimal(1))
-                .withIncomeDate(Instant.now())
+                .withIncomeDate(LocalDateTime.now())
                 .withCategory(AssetCategory.OTHER)
                 .withUser(userEntity)
                 .build();
         AssetEntity entity2 = new AssetEntityBuilder()
                 .withAmount(new BigDecimal(3))
-                .withIncomeDate(Instant.now())
+                .withIncomeDate(LocalDateTime.now())
                 .withCategory(AssetCategory.SALARY)
                 .withUser(userEntity)
                 .build();
         AssetEntity entity3 = new AssetEntityBuilder()
                 .withAmount(new BigDecimal(5))
-                .withIncomeDate(Instant.now())
+                .withIncomeDate(LocalDateTime.now())
                 .withCategory(AssetCategory.RENT)
                 .withUser(userEntity)
                 .build();
@@ -90,19 +90,19 @@ public abstract class IntegrationTestsData {
         UserEntity userEntity = initSecondMockUserInToDatabase();
         AssetEntity entity1 = new AssetEntityBuilder()
                 .withAmount(new BigDecimal(1))
-                .withIncomeDate(Instant.now())
+                .withIncomeDate(LocalDateTime.now())
                 .withCategory(AssetCategory.OTHER)
                 .withUser(userEntity)
                 .build();
         AssetEntity entity2 = new AssetEntityBuilder()
                 .withAmount(new BigDecimal(3))
-                .withIncomeDate(Instant.now())
+                .withIncomeDate(LocalDateTime.now())
                 .withCategory(AssetCategory.SALARY)
                 .withUser(userEntity)
                 .build();
         AssetEntity entity3 = new AssetEntityBuilder()
                 .withAmount(new BigDecimal(5))
-                .withIncomeDate(Instant.now())
+                .withIncomeDate(LocalDateTime.now())
                 .withCategory(AssetCategory.RENT)
                 .withUser(userEntity)
                 .build();
@@ -144,6 +144,19 @@ public abstract class IntegrationTestsData {
         var expenses = new ExpensesEntityBuilder()
                 .withUser(user)
                 .withAmount(BigDecimal.ONE)
+                .build();
+
+        var entity = expensesRepository.save(expenses);
+        return entity.getId();
+    }
+
+    protected UUID initExpensesInDatabase(UserEntity user, String date) {
+        var dateSuffix = "T00:00:00.000000001";
+
+        var expenses = new ExpensesEntityBuilder()
+                .withUser(user)
+                .withAmount(BigDecimal.ONE)
+                .withPurchaseDate(LocalDateTime.parse(date + dateSuffix))
                 .build();
 
         var entity = expensesRepository.save(expenses);
