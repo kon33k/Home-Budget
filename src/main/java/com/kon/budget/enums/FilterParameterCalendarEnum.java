@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum FilterExpensesParameterEnum {
+public enum FilterParameterCalendarEnum {
     FROM_DATE("from"),
     TO_DATE("to"),
     YEAR("year"),

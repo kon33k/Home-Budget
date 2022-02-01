@@ -5,7 +5,6 @@ import com.kon.budget.repository.entities.AssetEntity;
 import com.kon.budget.repository.entities.UserEntity;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

@@ -4,6 +4,7 @@ import com.kon.budget.builder.AssetDtoBuilder;
 import com.kon.budget.builder.AssetEntityBuilder;
 import com.kon.budget.enums.ValidatorsAssetEnum;
 import com.kon.budget.exception.AssetIncompleteException;
+import com.kon.budget.filters.AssetsFilterRange;
 import com.kon.budget.mapper.AssetsMapper;
 import com.kon.budget.repository.AssetsRepository;
 import com.kon.budget.repository.entities.AssetEntity;
@@ -37,14 +38,18 @@ class AssetsServiceTest {
     private AssetsRepository assetsRepository;
     @Mock
     private UserLogInfoService userLogInfoService;
+    @Mock
+    private AssetsFilterRange assetsFilterRange;
+
     private final AssetValidator assetValidator = new AssetValidator();
     private final AssetsMapper assetsMapper = new AssetsMapper();
 
     private AssetsService service;
 
+
     @BeforeEach
     public void init() {
-        service = new AssetsService(assetsRepository, assetsMapper, assetValidator, userLogInfoService);
+        service = new AssetsService(assetsRepository, assetsMapper, assetValidator, userLogInfoService, assetsFilterRange);
     }
 
     @Test

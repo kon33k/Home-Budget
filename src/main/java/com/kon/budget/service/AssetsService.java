@@ -1,22 +1,24 @@
 package com.kon.budget.service;
 
 import com.kon.budget.enums.AssetCategory;
+import com.kon.budget.filters.AssetsFilterRange;
+import com.kon.budget.filters.FilterRangeAbstract;
 import com.kon.budget.mapper.AssetsMapper;
 import com.kon.budget.repository.AssetsRepository;
+import com.kon.budget.repository.entities.AssetEntity;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.AssetDto;
 import com.kon.budget.validator.AssetValidator;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class AssetsService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(AssetsService.class.getName());
@@ -25,7 +27,19 @@ public class AssetsService {
     private final AssetsMapper assetsMapper;
     private final AssetValidator assetValidator;
     private final UserLogInfoService userLogInfoService;
+    private final FilterRangeAbstract<AssetEntity> filterRangeAbstract;
 
+    public AssetsService(AssetsRepository assetsRepository,
+                         AssetsMapper assetsMapper,
+                         AssetValidator assetValidator,
+                         UserLogInfoService userLogInfoService,
+                         AssetsFilterRange filterRangeAbstract) {
+        this.assetsRepository = assetsRepository;
+        this.assetsMapper = assetsMapper;
+        this.assetValidator = assetValidator;
+        this.userLogInfoService = userLogInfoService;
+        this.filterRangeAbstract = filterRangeAbstract;
+    }
 
     public List<AssetDto> getAllAssets() {
         LOGGER.debug("Get all assets");
@@ -83,5 +97,12 @@ public class AssetsService {
         LOGGER.info("Delete all assets by user: {} ", userEntity.getUsername());
 
         assetsRepository.deleteByUser(userEntity);
+    }
+
+    public List<AssetDto> getFilteredAssets(Map<String, String> filter) {
+        var user = userLogInfoService.getLoggedUserEntity();
+        return filterRangeAbstract.getAllByFilter(user, filter)
+                .stream().map(assetsMapper::fromEntityToDto)
+                .collect(Collectors.toList());
     }
 }

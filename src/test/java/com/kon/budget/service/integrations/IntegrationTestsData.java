@@ -30,7 +30,7 @@ public abstract class IntegrationTestsData {
     @Autowired
     protected AssetsRepository assetsRepository;
     @Autowired
-    protected AssetsService service;
+    protected AssetsService assetsService;
     @Autowired
     protected UserRepository userRepository;
     @Autowired
@@ -52,9 +52,19 @@ public abstract class IntegrationTestsData {
     protected static final String BCRYPT_REGEX =  "^[$]2[abxy]?[$](?:0[4-9]|[12][0-9]|3[01])[$][./0-9a-zA-Z]{53}$";
 
 
+    protected void initDatabaseWithUserAssets(UserEntity userEntity, String date) {
+        String dateSuffix = "T00:00:00.000000001";
+
+        initDatabaseWithUserAssets(userEntity, LocalDateTime.parse(date + dateSuffix));
+    }
+
     protected void initDatabaseWithUserAssets(UserEntity userEntity) {
+        initDatabaseWithUserAssets(userEntity, LocalDateTime.now());
+    }
+
+    private void initDatabaseWithUserAssets(UserEntity userEntity, LocalDateTime date) {
         var assetsEntity = new AssetEntityBuilder()
-                .withIncomeDate(LocalDateTime.now())
+                .withIncomeDate(date)
                 .withUser(userEntity)
                 .withAmount(BigDecimal.ONE)
                 .withCategory(AssetCategory.OTHER)
