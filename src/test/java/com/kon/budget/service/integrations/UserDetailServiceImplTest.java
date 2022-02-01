@@ -85,7 +85,7 @@ class UserDetailServiceImplTest extends IntegrationTestsData{
         userDetailsService.deleteUser();
         //then
         var userInDatabaseAfterDelete = userRepository.findAll();
-        assertThat(userInDatabaseAfterDelete).hasSize(0);
+        assertThat(userInDatabaseAfterDelete).isEmpty();
 
     }
 
