@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class AuthenticationControllerExceptionHandler {
 
-    /*
-    wysyła komunikat o błednym logownaiu zmienia http status z 500 na 403
+    /**
+    * wysyła komunikat o błednym logownaiu zmienia http status z 500 na 403
      */
 
     @ExceptionHandler

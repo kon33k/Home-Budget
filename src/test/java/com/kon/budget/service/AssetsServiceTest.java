@@ -4,7 +4,7 @@ import com.kon.budget.builder.AssetDtoBuilder;
 import com.kon.budget.builder.AssetEntityBuilder;
 import com.kon.budget.enums.ValidatorsAssetEnum;
 import com.kon.budget.exception.AssetIncompleteException;
-import com.kon.budget.filters.AssetsFilterRange;
+import com.kon.budget.filters.FilterRangeStrategy;
 import com.kon.budget.mapper.AssetsMapper;
 import com.kon.budget.repository.AssetsRepository;
 import com.kon.budget.repository.entities.AssetEntity;
@@ -19,7 +19,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +38,7 @@ class AssetsServiceTest {
     @Mock
     private UserLogInfoService userLogInfoService;
     @Mock
-    private AssetsFilterRange assetsFilterRange;
+    private FilterRangeStrategy filterRangeStrategy;
 
     private final AssetValidator assetValidator = new AssetValidator();
     private final AssetsMapper assetsMapper = new AssetsMapper();
@@ -49,7 +48,7 @@ class AssetsServiceTest {
 
     @BeforeEach
     public void init() {
-        service = new AssetsService(assetsRepository, assetsMapper, assetValidator, userLogInfoService, assetsFilterRange);
+        service = new AssetsService(assetsRepository, assetsMapper, assetValidator, userLogInfoService, filterRangeStrategy);
     }
 
     @Test

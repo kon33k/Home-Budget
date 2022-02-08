@@ -1,14 +1,15 @@
 package com.kon.budget.service;
 
 import com.kon.budget.enums.AssetCategory;
-import com.kon.budget.filters.AssetsFilterRange;
-import com.kon.budget.filters.FilterRangeAbstract;
+import com.kon.budget.enums.FilterSpecification;
+import com.kon.budget.filters.FilterRangeStrategy;
 import com.kon.budget.mapper.AssetsMapper;
 import com.kon.budget.repository.AssetsRepository;
 import com.kon.budget.repository.entities.AssetEntity;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.AssetDto;
 import com.kon.budget.validator.AssetValidator;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -27,18 +28,18 @@ public class AssetsService {
     private final AssetsMapper assetsMapper;
     private final AssetValidator assetValidator;
     private final UserLogInfoService userLogInfoService;
-    private final FilterRangeAbstract<AssetEntity> filterRangeAbstract;
+    private final FilterRangeStrategy<AssetEntity> filterRangeStrategy;
 
     public AssetsService(AssetsRepository assetsRepository,
                          AssetsMapper assetsMapper,
                          AssetValidator assetValidator,
                          UserLogInfoService userLogInfoService,
-                         AssetsFilterRange filterRangeAbstract) {
+                         FilterRangeStrategy filterRangeStrategy) {
         this.assetsRepository = assetsRepository;
         this.assetsMapper = assetsMapper;
         this.assetValidator = assetValidator;
         this.userLogInfoService = userLogInfoService;
-        this.filterRangeAbstract = filterRangeAbstract;
+        this.filterRangeStrategy = filterRangeStrategy;
     }
 
     public List<AssetDto> getAllAssets() {
@@ -101,7 +102,9 @@ public class AssetsService {
 
     public List<AssetDto> getFilteredAssets(Map<String, String> filter) {
         var user = userLogInfoService.getLoggedUserEntity();
-        return filterRangeAbstract.getAllByFilter(user, filter)
+        FilterSpecification specification = FilterSpecification.FOR_ASSETS;
+
+        return filterRangeStrategy.getFilteredDataFromSpecification(user, filter, specification)
                 .stream().map(assetsMapper::fromEntityToDto)
                 .collect(Collectors.toList());
     }

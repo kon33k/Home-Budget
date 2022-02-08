@@ -134,6 +134,46 @@ class AssetServiceIntegrationTest extends IntegrationTestsData{
     }
 
     @Test
+    void shouldReturnAllAssetsByFilterFromToAndCategory() {
+        //given
+        var lookingCategory = AssetCategory.RENT;
+        var notLookingCategory = AssetCategory.SALARY;
+
+        String fromDate = "2022-01-20";
+        String toDate = "2022-01-28";
+        String middleDate = "2022-01-24";
+        String middleDate2 = "2022-01-23";
+        String outOfRangeDate = "2022-01-30";
+        String outOfRangeDate2 = "2022-01-31";
+
+        var user = initDatabaseWithUser();
+        initDatabaseWithUserAssets(user, fromDate, lookingCategory);
+        initDatabaseWithUserAssets(user, toDate, lookingCategory);
+        initDatabaseWithUserAssets(user, toDate, notLookingCategory);
+        initDatabaseWithUserAssets(user, middleDate, lookingCategory);
+        initDatabaseWithUserAssets(user, middleDate2, notLookingCategory);
+        initDatabaseWithUserAssets(user, outOfRangeDate, lookingCategory);
+        initDatabaseWithUserAssets(user, outOfRangeDate2, notLookingCategory);
+
+        Map<String, String> filter = new HashMap<>() {{
+            put(FilterParameterCalendarEnum.FROM_DATE.getKey(), fromDate);
+            put(FilterParameterCalendarEnum.TO_DATE.getKey(), toDate);
+            put(FilterParameterCalendarEnum.CATEGORY.getKey() , lookingCategory.name());
+        }};
+
+        //when
+        var result = assetsService.getFilteredAssets(filter);
+        //then
+        assertThat(result).hasSize(3);
+        var dateAsString = result.stream()
+                .map(dto -> dto.getIncomeDate().toString().substring(0, fromDate.length()))
+                .collect(Collectors.toList());
+        assertThat(dateAsString).hasSize(3)
+                .contains(fromDate, toDate, middleDate)
+                .doesNotContain(outOfRangeDate);
+    }
+
+    @Test
     void shouldReturnAllAssetsByFilterByMonthAndYear() {
         //given
         String fromDate = "2022-01-20";
@@ -163,6 +203,8 @@ class AssetServiceIntegrationTest extends IntegrationTestsData{
                 .contains(fromDate, toDate, middleDate)
                 .doesNotContain(outOfRangeDate);
     }
+
+
 
     @ParameterizedTest(name =  "{0}")
     @MethodSource

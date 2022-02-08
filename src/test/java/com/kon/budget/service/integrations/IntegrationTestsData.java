@@ -52,22 +52,32 @@ public abstract class IntegrationTestsData {
     protected static final String BCRYPT_REGEX =  "^[$]2[abxy]?[$](?:0[4-9]|[12][0-9]|3[01])[$][./0-9a-zA-Z]{53}$";
 
 
+    protected void initDatabaseWithUserAssets(UserEntity userEntity) {
+        initDatabaseWithUserAssets(userEntity, LocalDateTime.now(), AssetCategory.RENT);
+    }
+
     protected void initDatabaseWithUserAssets(UserEntity userEntity, String date) {
         String dateSuffix = "T00:00:00.000000001";
 
-        initDatabaseWithUserAssets(userEntity, LocalDateTime.parse(date + dateSuffix));
+        initDatabaseWithUserAssets(userEntity, LocalDateTime.parse(date + dateSuffix), AssetCategory.RENT);
     }
 
-    protected void initDatabaseWithUserAssets(UserEntity userEntity) {
-        initDatabaseWithUserAssets(userEntity, LocalDateTime.now());
+    protected void initDatabaseWithUserAssets(UserEntity userEntity,
+                                              String date,
+                                              AssetCategory category) {
+        String dateSuffix = "T00:00:00.000000001";
+
+        initDatabaseWithUserAssets(userEntity, LocalDateTime.parse(date + dateSuffix), category);
     }
 
-    private void initDatabaseWithUserAssets(UserEntity userEntity, LocalDateTime date) {
+    private void initDatabaseWithUserAssets(UserEntity userEntity,
+                                            LocalDateTime date,
+                                            AssetCategory category) {
         var assetsEntity = new AssetEntityBuilder()
                 .withIncomeDate(date)
                 .withUser(userEntity)
                 .withAmount(BigDecimal.ONE)
-                .withCategory(AssetCategory.OTHER)
+                .withCategory(category)
                 .build();
 
         assetsRepository.save(assetsEntity);

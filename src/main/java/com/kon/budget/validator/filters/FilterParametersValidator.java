@@ -1,10 +1,10 @@
-package com.kon.budget.validator;
+package com.kon.budget.validator.filters;
 
 import com.kon.budget.enums.FilterParameterCalendarEnum;
 
 import java.util.Map;
 
-public abstract class FilterParametersValidator {
+abstract class FilterParametersValidator {
 
     /**
      * walidacja filtrów, error code to random ULID
@@ -12,7 +12,7 @@ public abstract class FilterParametersValidator {
 
     public void assertFilter(Map<String, String> filter) {
         checkIfFromDateExistToDateIsMissing(filter, "01FTBQPDCDN0H07Z7RX4JKF1BE");
-        chceckifToDateExistFromDateIsMissing(filter, "01FTBQSXRGNQ60WWYE2ENE953W");
+        checkIfToDateExistFromDateIsMissing(filter, "01FTBQSXRGNQ60WWYE2ENE953W");
         checkIfYearExistAndMonthIsMissing(filter, "01FTBRZ5MR8V14HBZT72E4D9AY");
         checkIfMonthExistAndYearIsMissing(filter, "01FTBS133FXBQJJA82Q1WJAX9C");
 
@@ -32,7 +32,7 @@ public abstract class FilterParametersValidator {
         }
     }
 
-    protected void chceckifToDateExistFromDateIsMissing(Map<String, String> filter, String errorCode) {
+    protected void checkIfToDateExistFromDateIsMissing(Map<String, String> filter, String errorCode) {
         if (filter.containsKey(FilterParameterCalendarEnum.TO_DATE.getKey())
                 && !filter.containsKey(FilterParameterCalendarEnum.FROM_DATE.getKey())) {
             throwException(FilterParameterCalendarEnum.FROM_DATE.getKey(), errorCode);

@@ -9,7 +9,8 @@ public enum FilterParameterCalendarEnum {
     FROM_DATE("from"),
     TO_DATE("to"),
     YEAR("year"),
-    MONTH("month");
+    MONTH("month"),
+    CATEGORY("category");
 
     private final String key;
 

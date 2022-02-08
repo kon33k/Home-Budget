@@ -2,15 +2,17 @@ package com.kon.budget.validator;
 
 import com.kon.budget.enums.ValidatorsAssetEnum;
 import com.kon.budget.service.dtos.AssetDto;
+import com.kon.budget.validator.Validator;
+import com.kon.budget.validator.ValidatorMessage;
 
 import java.util.Objects;
 
-class IncomeDataValidator implements Validator{
+public class IncomeDataValidator implements Validator {
 
-    /*
-    sprawcza czy wartosc incomeDate jest poprawnie wpisana w json
-    message brany z enuma
-    kod bledu to rancom ULIC
+    /**
+    * sprawcza czy wartosc incomeDate jest poprawnie wpisana w json
+    * message brany z enuma
+    * kod bledu to rancom ULIC
      */
 
     @Override

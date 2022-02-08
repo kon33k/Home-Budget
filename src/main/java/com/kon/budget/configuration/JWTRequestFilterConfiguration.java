@@ -21,8 +21,8 @@ import java.util.Objects;
 @Service
 public class JWTRequestFilterConfiguration extends OncePerRequestFilter {
 
-    /*
-    filtoranie zapytan przychodzacych, sprawdza czy wystpeuje tam hash autentykujacy  i wyciagania z niego infoemacjie
+    /**
+    * filtoranie zapytan przychodzacych, sprawdza czy wystpeuje tam hash autentykujacy  i wyciagania z niego infoemacjie
      */
     private final UserDetailsService userDetailsService;
     private final JWTService jwtService;

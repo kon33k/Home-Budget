@@ -9,19 +9,17 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Component
+@Component("for expenses range")
 @AllArgsConstructor
-public class ExpensesFilterRange extends FilterRangeAbstract{
+class ExpensesFilterRange extends FilterRangeAbstract<ExpensesEntity> {
 
     private final ExpensesRepository expensesRepository;
 
     @Override
-    protected List<ExpensesEntity> getAllEntityBetweenDate(UserEntity user, LocalDateTime fromDate, LocalDateTime toDate) {
+    protected List<ExpensesEntity> getAllEntityBetweenDate(UserEntity user,
+                                                           LocalDateTime fromDate,
+                                                           LocalDateTime toDate,
+                                                           String category) {
         return expensesRepository.findAllByBetweenDate(user, fromDate, toDate);
-    }
-
-    @Override
-    protected String getFilterName() {
-        return "ExpensesFilter";
     }
 }

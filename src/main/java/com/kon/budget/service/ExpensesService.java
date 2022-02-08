@@ -1,12 +1,13 @@
 package com.kon.budget.service;
 
-import com.kon.budget.filters.ExpensesFilterRange;
-import com.kon.budget.filters.FilterRangeAbstract;
+import com.kon.budget.enums.FilterSpecification;
+import com.kon.budget.filters.FilterRangeStrategy;
 import com.kon.budget.mapper.ExpensesMapper;
 import com.kon.budget.repository.ExpensesRepository;
 import com.kon.budget.repository.entities.ExpensesEntity;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.ExpensesDto;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ExpensesService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ExpensesService.class.getName());
@@ -25,17 +27,7 @@ public class ExpensesService {
     private final ExpensesRepository expensesRepository;
     private final ExpensesMapper expensesMapper;
     private final UserLogInfoService userLogInfoService;
-    private final FilterRangeAbstract<ExpensesEntity> filterRangeAbstract;
-
-    public ExpensesService(ExpensesRepository expensesRepository,
-                           ExpensesMapper expensesMapper,
-                           UserLogInfoService userLogInfoService,
-                           ExpensesFilterRange filterRangeAbstract) {
-        this.expensesRepository = expensesRepository;
-        this.expensesMapper = expensesMapper;
-        this.userLogInfoService = userLogInfoService;
-        this.filterRangeAbstract = filterRangeAbstract;
-    }
+    private final FilterRangeStrategy<ExpensesEntity> filterRangeStrategy;
 
     /**
     * pobranie wszystkich encji expeneses z bazy danych
@@ -117,8 +109,9 @@ public class ExpensesService {
 
     public List<ExpensesDto> getFilteredExpenses(Map<String, String> filter) {
         var user = userLogInfoService.getLoggedUserEntity();
+        FilterSpecification specification = FilterSpecification.FOR_EXPENSES;
 
-        return filterRangeAbstract.getAllByFilter(user, filter)
+        return filterRangeStrategy.getFilteredDataFromSpecification(user, filter, specification)
                 .stream().map(expensesMapper::fromEntityToDtos)
                 .collect(Collectors.toList());
     }
