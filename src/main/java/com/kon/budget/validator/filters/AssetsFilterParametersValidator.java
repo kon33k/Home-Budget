@@ -1,11 +1,11 @@
-package com.kon.budget.validator;
+package com.kon.budget.validator.filters;
 
 import com.kon.budget.enums.FilterExceptionErrorMessages;
 import com.kon.budget.exception.MissingAssetsFilterException;
 import org.springframework.stereotype.Component;
 
-@Component
-public class AssetsFilterParametersValidator extends FilterParametersValidator {
+@Component("for assets validator")
+class AssetsFilterParametersValidator extends FilterParametersValidator {
 
     @Override
     public void throwException(String missingKey, String errorCode) {

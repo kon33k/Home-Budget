@@ -4,8 +4,8 @@ import com.kon.budget.enums.AuthenticationMessageEnum;
 
 public class InvalidUsernameOrPasswordException extends RuntimeException {
 
-    /*
-    niepoprawnie wpisane credecaiale usera
+    /**
+    * niepoprawnie wpisane credecaiale usera
      */
 
     public InvalidUsernameOrPasswordException() {

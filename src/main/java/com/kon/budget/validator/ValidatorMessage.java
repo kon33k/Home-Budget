@@ -10,8 +10,8 @@ import java.util.List;
 @Setter
 class ValidatorMessage {
 
-    /*
-    tworzy wiadomosci i kod errora
+    /**
+    * tworzy wiadomosci i kod errora
     */
 
     private List<String> message = new ArrayList<>();
