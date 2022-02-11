@@ -1,6 +1,5 @@
 package com.kon.budget.service.integrations;
 
-import com.kon.budget.builder.AssetDtoBuilder;
 import com.kon.budget.enums.AssetCategory;
 import com.kon.budget.enums.FilterExceptionErrorMessages;
 import com.kon.budget.enums.FilterParameterCalendarEnum;
@@ -42,10 +41,12 @@ class AssetServiceIntegrationTest extends IntegrationTestsData{
     void shouldAddAssetToDB() {
         // given
         initMainMockUserInToDatabase();
-        AssetDto dto = new AssetDtoBuilder()
-                .withAmount(new BigDecimal(11))
-                .withIncomeDate(LocalDateTime.now())
-                .withCategory(AssetCategory.RENT)
+        String description = "test description";
+        AssetDto dto = AssetDto.builder()
+                .amount(new BigDecimal(11))
+                .incomeDate(LocalDateTime.now())
+                .category(AssetCategory.RENT)
+                .description(description)
                 .build();
         // when
         assetsService.setAsset(dto);
@@ -56,6 +57,7 @@ class AssetServiceIntegrationTest extends IntegrationTestsData{
         assertThat(entity.getCategory()).isEqualTo(dto.getCategory());
         assertThat(entity.getAmount()).isEqualTo(dto.getAmount());
         assertThat(entity.getIncomeDate()).isEqualTo(dto.getIncomeDate());
+        assertThat(entity.getDescription()).isEqualTo(dto.getDescription());
     }
 
     @Test

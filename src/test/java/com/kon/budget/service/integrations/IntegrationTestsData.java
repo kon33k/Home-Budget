@@ -1,12 +1,11 @@
 package com.kon.budget.service.integrations;
 
-import com.kon.budget.builder.AssetEntityBuilder;
-import com.kon.budget.builder.ExpensesEntityBuilder;
 import com.kon.budget.enums.AssetCategory;
 import com.kon.budget.repository.AssetsRepository;
 import com.kon.budget.repository.ExpensesRepository;
 import com.kon.budget.repository.UserRepository;
 import com.kon.budget.repository.entities.AssetEntity;
+import com.kon.budget.repository.entities.ExpensesEntity;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,11 +72,11 @@ public abstract class IntegrationTestsData {
     private void initDatabaseWithUserAssets(UserEntity userEntity,
                                             LocalDateTime date,
                                             AssetCategory category) {
-        var assetsEntity = new AssetEntityBuilder()
-                .withIncomeDate(date)
-                .withUser(userEntity)
-                .withAmount(BigDecimal.ONE)
-                .withCategory(category)
+        var assetsEntity = AssetEntity.builder()
+                .incomeDate(date)
+                .user(userEntity)
+                .amount(BigDecimal.ONE)
+                .category(category)
                 .build();
 
         assetsRepository.save(assetsEntity);
@@ -85,46 +84,46 @@ public abstract class IntegrationTestsData {
 
     protected void initDataBaseByMainMockUserAndHisAssets() {
         UserEntity userEntity = initMainMockUserInToDatabase();
-        AssetEntity entity1 = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(1))
-                .withIncomeDate(LocalDateTime.now())
-                .withCategory(AssetCategory.OTHER)
-                .withUser(userEntity)
+        AssetEntity entity1 = AssetEntity.builder()
+                .amount(new BigDecimal(1))
+                .incomeDate(LocalDateTime.now())
+                .category(AssetCategory.OTHER)
+                .user(userEntity)
                 .build();
-        AssetEntity entity2 = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(3))
-                .withIncomeDate(LocalDateTime.now())
-                .withCategory(AssetCategory.SALARY)
-                .withUser(userEntity)
+        AssetEntity entity2 = AssetEntity.builder()
+                .amount(new BigDecimal(3))
+                .incomeDate(LocalDateTime.now())
+                .category(AssetCategory.SALARY)
+                .user(userEntity)
                 .build();
-        AssetEntity entity3 = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(5))
-                .withIncomeDate(LocalDateTime.now())
-                .withCategory(AssetCategory.RENT)
-                .withUser(userEntity)
+        AssetEntity entity3 = AssetEntity.builder()
+                .amount(new BigDecimal(5))
+                .incomeDate(LocalDateTime.now())
+                .category(AssetCategory.RENT)
+                .user(userEntity)
                 .build();
         assetsRepository.saveAll(asList(entity1, entity2, entity3));
     }
 
     protected void initDataBaseBySecondMockUserAndHisAssets() {
         UserEntity userEntity = initSecondMockUserInToDatabase();
-        AssetEntity entity1 = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(1))
-                .withIncomeDate(LocalDateTime.now())
-                .withCategory(AssetCategory.OTHER)
-                .withUser(userEntity)
+        AssetEntity entity1 = AssetEntity.builder()
+                .amount(new BigDecimal(1))
+                .incomeDate(LocalDateTime.now())
+                .category(AssetCategory.OTHER)
+                .user(userEntity)
                 .build();
-        AssetEntity entity2 = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(3))
-                .withIncomeDate(LocalDateTime.now())
-                .withCategory(AssetCategory.SALARY)
-                .withUser(userEntity)
+        AssetEntity entity2 = AssetEntity.builder()
+                .amount(new BigDecimal(3))
+                .incomeDate(LocalDateTime.now())
+                .category(AssetCategory.SALARY)
+                .user(userEntity)
                 .build();
-        AssetEntity entity3 = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(5))
-                .withIncomeDate(LocalDateTime.now())
-                .withCategory(AssetCategory.RENT)
-                .withUser(userEntity)
+        AssetEntity entity3 = AssetEntity.builder()
+                .amount(new BigDecimal(5))
+                .incomeDate(LocalDateTime.now())
+                .category(AssetCategory.RENT)
+                .user(userEntity)
                 .build();
         assetsRepository.saveAll(asList(entity1, entity2, entity3));
     }
@@ -161,9 +160,9 @@ public abstract class IntegrationTestsData {
     }
 
     protected UUID initExpensesInDatabase(UserEntity user) {
-        var expenses = new ExpensesEntityBuilder()
-                .withUser(user)
-                .withAmount(BigDecimal.ONE)
+        var expenses = ExpensesEntity.builder()
+                .user(user)
+                .amount(BigDecimal.ONE)
                 .build();
 
         var entity = expensesRepository.save(expenses);
@@ -173,10 +172,10 @@ public abstract class IntegrationTestsData {
     protected UUID initExpensesInDatabase(UserEntity user, String date) {
         var dateSuffix = "T00:00:00.000000001";
 
-        var expenses = new ExpensesEntityBuilder()
-                .withUser(user)
-                .withAmount(BigDecimal.ONE)
-                .withPurchaseDate(LocalDateTime.parse(date + dateSuffix))
+        var expenses = ExpensesEntity.builder()
+                .user(user)
+                .amount(BigDecimal.ONE)
+                .purchaseDate(LocalDateTime.parse(date + dateSuffix))
                 .build();
 
         var entity = expensesRepository.save(expenses);

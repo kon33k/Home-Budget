@@ -7,14 +7,14 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "assets")
-@Getter
-@Setter
-@ToString
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class AssetEntity {
 
     @Id
@@ -26,6 +26,7 @@ public class AssetEntity {
     )
     private UUID id;
     private BigDecimal amount;
+    private String description;
 
     private LocalDateTime incomeDate;
 
@@ -34,17 +35,4 @@ public class AssetEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AssetEntity entity = (AssetEntity) o;
-        return Objects.equals(id, entity.id) && Objects.equals(user, entity.user);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user);
-    }
 }
