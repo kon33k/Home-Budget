@@ -1,9 +1,7 @@
 package com.kon.budget.repository.entities;
 
 import com.kon.budget.enums.ExpensesCategory;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -14,9 +12,10 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "expenses")
-@Getter
-@Setter
-@ToString
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ExpensesEntity {
 
     @Id
@@ -36,16 +35,4 @@ public class ExpensesEntity {
     @Enumerated(EnumType.STRING)
     private ExpensesCategory category;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ExpensesEntity that = (ExpensesEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(user, that.user);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user);
-    }
 }

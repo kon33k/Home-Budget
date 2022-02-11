@@ -54,6 +54,10 @@ public class ExpensesService {
         LOGGER.info("ExpenseSaved");
     }
 
+    public void setExpenses(List<ExpensesDto> dtos) {
+        dtos.forEach(this::setExpenses);
+    }
+
     /**
     * usuniecie encji Expeneses w bazie danych
      */

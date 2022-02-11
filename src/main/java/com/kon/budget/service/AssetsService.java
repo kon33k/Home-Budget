@@ -9,7 +9,6 @@ import com.kon.budget.repository.entities.AssetEntity;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.AssetDto;
 import com.kon.budget.validator.AssetValidator;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -58,6 +57,10 @@ public class AssetsService {
         var entity = assetsMapper.fromDtoToEntity(dto, user);
         assetsRepository.save(entity);
         LOGGER.info("Asset Saved");
+    }
+
+    public void setAsset(List<AssetDto> dtos) {
+        dtos.forEach(this::setAsset);
     }
 
     public void deleteAsset(AssetDto dto) {

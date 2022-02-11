@@ -1,11 +1,11 @@
 package com.kon.budget.service.integrations;
 
-import com.kon.budget.builder.ExpensesDtoBuilder;
 import com.kon.budget.enums.ExpensesCategory;
 import com.kon.budget.enums.FilterExceptionErrorMessages;
 import com.kon.budget.enums.FilterParameterCalendarEnum;
 import com.kon.budget.enums.MonthsEnum;
 import com.kon.budget.exception.MissingExpensesFilterException;
+import com.kon.budget.service.dtos.ExpensesDto;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,8 +28,8 @@ class ExpensesServiceIntegrationTest extends IntegrationTestsData{
     void shouldSaveOneExpenseInDatabase() {
         //given
         initDatabaseWithUser();
-        var dto = new ExpensesDtoBuilder()
-                .withAmount(BigDecimal.ONE)
+        var dto =  ExpensesDto.builder()
+                .amount(BigDecimal.ONE)
                 .build();
         //when
         expensesService.setExpenses(dto);
@@ -44,9 +44,9 @@ class ExpensesServiceIntegrationTest extends IntegrationTestsData{
         //given
         var user =initDatabaseWithUser();
         var expensesId = initExpensesInDatabase(user);
-        var dto = new ExpensesDtoBuilder()
-                .withAmount(BigDecimal.ONE)
-                .withId(expensesId)
+        var dto = ExpensesDto.builder()
+                .amount(BigDecimal.ONE)
+                .id(expensesId)
                 .build();
 
         var entitiesInDatabase = expensesRepository.findAll();
@@ -63,10 +63,10 @@ class ExpensesServiceIntegrationTest extends IntegrationTestsData{
         //given
         var user =initDatabaseWithUser();
         var expensesId = initExpensesInDatabase(user);
-        var dto = new ExpensesDtoBuilder()
-                .withAmount(BigDecimal.TEN)
-                .withCategory(ExpensesCategory.FUN)
-                .withId(expensesId)
+        var dto = ExpensesDto.builder()
+                .amount(BigDecimal.TEN)
+                .category(ExpensesCategory.FUN)
+                .id(expensesId)
                 .build();
 
         var entityInDatabase = expensesRepository.findById(expensesId);

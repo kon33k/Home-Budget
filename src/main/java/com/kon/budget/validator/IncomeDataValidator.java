@@ -2,8 +2,6 @@ package com.kon.budget.validator;
 
 import com.kon.budget.enums.ValidatorsAssetEnum;
 import com.kon.budget.service.dtos.AssetDto;
-import com.kon.budget.validator.Validator;
-import com.kon.budget.validator.ValidatorMessage;
 
 import java.util.Objects;
 

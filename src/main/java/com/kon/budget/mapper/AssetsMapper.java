@@ -1,7 +1,5 @@
 package com.kon.budget.mapper;
 
-import com.kon.budget.builder.AssetDtoBuilder;
-import com.kon.budget.builder.AssetEntityBuilder;
 import com.kon.budget.repository.entities.AssetEntity;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.AssetDto;
@@ -23,25 +21,29 @@ public class AssetsMapper {
             return null;
         }
 
-        var entityBuilder = new AssetEntityBuilder();
+        var entityBuilder = AssetEntity.builder();
 
         if(Objects.nonNull(dto.getAmount())) {
-            entityBuilder.withAmount(dto.getAmount());
+            entityBuilder.amount(dto.getAmount());
         }
 
         if(Objects.nonNull(dto.getId())) {
-            entityBuilder.withId(dto.getId());
+            entityBuilder.id(dto.getId());
         }
 
         if(Objects.nonNull(dto.getIncomeDate()))
-            entityBuilder.withIncomeDate(dto.getIncomeDate());
+            entityBuilder.incomeDate(dto.getIncomeDate());
 
         if(Objects.nonNull(dto.getCategory())) {
-            entityBuilder.withCategory(dto.getCategory());
+            entityBuilder.category(dto.getCategory());
+        }
+
+        if(Objects.nonNull(dto.getDescription())) {
+            entityBuilder.description(dto.getDescription());
         }
 
         if(Objects.nonNull(user)) {
-            entityBuilder.withUser(user);
+            entityBuilder.user(user);
         }
 
         return entityBuilder.build();
@@ -52,30 +54,33 @@ public class AssetsMapper {
      */
 
     public AssetDto fromEntityToDto(AssetEntity entity) {
-
-        if(Objects.isNull(entity)) {
+        if (Objects.isNull(entity)) {
             return null;
         }
 
-        var dtoBuilder = new AssetDtoBuilder();
+        var dtoBuilder = AssetDto.builder();
 
-        if(Objects.nonNull(entity.getAmount())) {
-            dtoBuilder.withAmount(entity.getAmount());
+        if (Objects.nonNull(entity.getAmount())) {
+            dtoBuilder.amount(entity.getAmount());
         }
 
-        if(Objects.nonNull(entity.getId())) {
-            dtoBuilder.withId(entity.getId());
+        if (Objects.nonNull(entity.getId())) {
+            dtoBuilder.id(entity.getId());
         }
 
-        if(Objects.nonNull((entity.getIncomeDate()))) {
-            dtoBuilder.withIncomeDate(entity.getIncomeDate());
+        if (Objects.nonNull(entity.getIncomeDate())) {
+            dtoBuilder.incomeDate(entity.getIncomeDate());
         }
 
-        if(Objects.nonNull(entity.getIncomeDate())) {
-            dtoBuilder.withCategory(entity.getCategory());
+        if (Objects.nonNull(entity.getDescription())) {
+            dtoBuilder.description(entity.getDescription());
         }
 
+        if (Objects.nonNull(entity.getCategory())) {
+            dtoBuilder.category(entity.getCategory());
+        }
 
         return dtoBuilder.build();
+
     }
 }
