@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @AllArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
 
-    @GetMapping
+    @PostMapping("/login")
     public AuthenticationJwtToken getAuthenticationToken(@RequestBody UserDetailsDto userDetailsDto) {
         return authenticationService.createAuthenticationToken(userDetailsDto);
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     public UUID setUserDetails(@RequestBody UserDetailsDto userDetailsDto) {
         return userDetailsServiceImpl.saveUser(userDetailsDto);
     }
