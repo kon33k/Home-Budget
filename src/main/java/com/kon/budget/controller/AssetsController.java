@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/assets")
+@RequestMapping("/api/assets")
 @AllArgsConstructor
 public class AssetsController {
 

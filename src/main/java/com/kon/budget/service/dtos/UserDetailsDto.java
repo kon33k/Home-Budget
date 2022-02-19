@@ -1,10 +1,10 @@
 package com.kon.budget.service.dtos;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDetailsDto {
 
     private String username;

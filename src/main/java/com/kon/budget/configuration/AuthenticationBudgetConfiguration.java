@@ -29,9 +29,17 @@ public class AuthenticationBudgetConfiguration extends WebSecurityConfigurerAdap
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers(HttpMethod.GET,"/auth").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.POST,"/auth").permitAll()
+                .authorizeRequests().antMatchers("/swagger-ui.html").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/swagger-ui/**").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/v2/api-docs").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/swagger-resources/**").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
