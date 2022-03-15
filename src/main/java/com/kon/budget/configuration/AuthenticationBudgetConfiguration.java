@@ -41,7 +41,8 @@ public class AuthenticationBudgetConfiguration extends WebSecurityConfigurerAdap
                 .and()
                 .authorizeRequests().antMatchers("/webjars/**").permitAll()
                 .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().cors();
 
         http.addFilterBefore(jwtRequestFilterConfiguration, UsernamePasswordAuthenticationFilter.class);
     }
