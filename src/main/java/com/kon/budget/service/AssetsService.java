@@ -5,17 +5,21 @@ import com.kon.budget.enums.FilterSpecification;
 import com.kon.budget.filters.FilterRangeStrategy;
 import com.kon.budget.mapper.AssetsMapper;
 import com.kon.budget.repository.AssetsRepository;
+import com.kon.budget.repository.UserRepository;
 import com.kon.budget.repository.entities.AssetEntity;
 import com.kon.budget.repository.entities.UserEntity;
 import com.kon.budget.service.dtos.AssetDto;
 import com.kon.budget.validator.AssetValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -80,6 +84,7 @@ public class AssetsService {
         var entity = assetsRepository.findById(dto.getId());
         entity.ifPresent(e -> {
             e.setAmount(dto.getAmount());
+            e.setDescription(dto.getDescription());
             assetsRepository.saveAndFlush(e);
         });
         LOGGER.info("Asset updated");
@@ -95,6 +100,12 @@ public class AssetsService {
     private UserEntity getUserEntity() {
         LOGGER.info("GetLoggedUserEntity");
         return userLogInfoService.getLoggedUserEntity();
+    }
+
+    public void deleteById(UUID id) {
+        LOGGER.info("Delete asset By Id: {}", id);
+
+        assetsRepository.deleteById(id);
     }
 
     public void deleteAllAssetsByUser(UserEntity userEntity) {
